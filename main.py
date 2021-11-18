@@ -51,7 +51,9 @@ def _video_output_path(input_path, amp_f):
 
 def amplify(model_path, input_video, *, amplification=1.0, device="cuda:0", skip_frames=1):
     device = torch.device(device)
-    model = torch.load(model_path).to(device)
+    model = MagNet()
+    model.load_state_dict(torch.load(model_path))
+    model.to(device)
     video = VideoFileClip(input_video)
     _to_tensor = transforms.ToTensor()
     last_frames = []
