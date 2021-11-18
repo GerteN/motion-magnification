@@ -8,11 +8,11 @@ class Encoder(nn.Module):
         super().__init__()
         self.conv = nn.Sequential(
             # Convolution 1
-            nn.ReflectionPad2d(3),
+            nn.ZeroPad2d(3),
             nn.Conv2d(3, 16, 7, 1),
             nn.ReLU(),
             # Convolution 2
-            nn.ReflectionPad2d(1),
+            nn.ZeroPad2d(1),
             nn.Conv2d(16, 32, 3, 2),
             nn.ReLU(),
         )
@@ -22,14 +22,14 @@ class Encoder(nn.Module):
             ResidualBlock(32, 32, 3, 1)
         )
         self.texture = nn.Sequential(
-            nn.ReflectionPad2d(1),
+            nn.ZeroPad2d(1),
             nn.Conv2d(32, 32, 3, 2),
             nn.ReLU(),
             ResidualBlock(32, 32, 3, 1),
             ResidualBlock(32, 32, 3, 1),
         )
         self.shape = nn.Sequential(
-            nn.ReflectionPad2d(1),
+            nn.ZeroPad2d(1),
             nn.Conv2d(32, 32, 3, 1),
             nn.ReLU(),
             ResidualBlock(32, 32, 3, 1),
@@ -53,7 +53,7 @@ class Manipulator(nn.Module):
             nn.ReLU(),
         )
         self.conv2 = nn.Sequential(
-            nn.ReflectionPad2d(1),
+            nn.ZeroPad2d(1),
             nn.Conv2d(32, 32, 3, 1),
             ResidualBlock(32, 32, 3, 1),
         )
@@ -81,10 +81,10 @@ class Decoder(nn.Module):
         )
         self.deconv = nn.Sequential(
             nn.Upsample(scale_factor=2),
-            nn.ReflectionPad2d(1),
+            nn.ZeroPad2d(1),
             nn.Conv2d(64, 32, 3, 1),
             nn.ReLU(),
-            nn.ReflectionPad2d(3),
+            nn.ZeroPad2d(3),
             nn.Conv2d(32, 3, 7, 1),
         )
 
@@ -100,10 +100,10 @@ class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride):
         super().__init__()
         self.block = nn.Sequential(
-            nn.ReflectionPad2d(kernel_size // 2),
+            nn.ZeroPad2d(kernel_size // 2),
             nn.Conv2d(in_channels, out_channels, kernel_size, stride=stride),
             nn.ReLU(),
-            nn.ReflectionPad2d(kernel_size // 2),
+            nn.ZeroPad2d(kernel_size // 2),
             nn.Conv2d(in_channels, out_channels, kernel_size, stride=stride),
         )
 
